@@ -4,13 +4,10 @@
 #start fresh here
 rm(list=ls(all=TRUE))
 
-# Check for installtion and read in necessary R libraries
-# xtable for creating tables, ggplot2 for plotting, reshape2 for melting
-# dataframes, scales for printing percents
+# Load necessary packages
 
-requiredPackages = c('xtable', 'ggplot2', 'reshape2', 'scales', 'rmarkdown', 'knitr')
+requiredPackages = c('xtable', 'ggplot2', 'reshape2', 'scales')
 for(p in requiredPackages){
-  if(!require(p,character.only = TRUE)) install.packages(p)
   library(p,character.only = TRUE)
 }
 
@@ -33,14 +30,17 @@ spp.sci = "Sebastes nebulosus"
 # minimum vulnerable age class
 min_age = "1+"
 
+<<<<<<< HEAD
+
+=======
 # Fecundity relationship?; could change this to look at the SS input...
 # whether spawning output is billions of eggs (fecundity relationship on) or 
 # mt (no fecundity relationship)
-# TRUE = Fecundity relationship turned on ; FALSE = no fecundity relationship 
-fecund = TRUE  
-     # Fecundity text depending on the input value above (can change this line if you like)
-     if(fecund == TRUE){fecund_unit='billion eggs'} else {fecund_unit = 'mt'}
+fecund = mod1$SpawnOutputUnits
+
+
   
+>>>>>>> 596aaf7235c5af12b89ab8dc2b58c0a9fbf313a3
 # number of independent assessment models to include in the document
 n_models = 1
   
@@ -56,6 +56,13 @@ MT   = 0.4   # management target; .4 for rockfish
 MSST = 0.25  # minimum stock size threshold; 0.25 for rockfish
 
 # -----------------------------------------------------------------------------
+# Fecundity relationship
+# whether spawning output is billions of eggs (fecundity relationship on) or 
+# mt (no fecundity relationship)
+fecund = mod1$SpawnOutputUnits  
+# Fecundity text depending on the input value above (can change this line if you like)
+if(fecund == 'numbers'){fecund_unit='billion eggs'} else {fecund_unit = 'mt'}
+
 # Change these years either here or in the table code if you need to
 
 # First and last years of the model
@@ -114,11 +121,18 @@ for(imod in 1:n_models) {
     dummy_df = subset(plotInfoTable,category==categories[icat])
     dummy_df = data.frame(lapply(dummy_df, as.character), stringsAsFactors=FALSE)
     dummy_df$label = substr(dummy_df$basename,1, nchar(dummy_df$basename)-4)
+    dummy_df$filepath = paste0('./r4ss/plots_',mod_num,'/',dummy_df$basename)
     assign(paste0(categories[icat],'_',mod_num),dummy_df)
   }
 } # end n_models
 
 # multiple models
 multi_page_fig = c('page2', 'page3', 'page4', 'page5', 'page6', 'page7')
+
+# Give plotInfoTable columns to use to paste in info for the 
+# caption, label and file path
+caption_col = 2
+label_col = 10
+path_col =  11
 
 

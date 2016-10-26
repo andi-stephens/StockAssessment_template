@@ -22,6 +22,20 @@ rm(list=ls(all=TRUE))
 
 stop("\n  This file should not be sourced!") # note to stop from accidental sourcing
 
+# Here we're going to make sure you have all the required packages for the template
+# Check for installtion and make sure all R libraries can be loaded
+# xtable for creating tables, ggplot2 for plotting, reshape2 for melting
+# dataframes, scales for printing percents
+# You may have to manually install knitr - reason unknown!
+
+requiredPackages = c('xtable', 'ggplot2', 'reshape2', 'scales', 'rmarkdown', 'knitr', 'devtools')
+for(p in requiredPackages){
+  if(!require(p,character.only = TRUE)) install.packages(p)
+  library(p,character.only = TRUE)
+}
+
+# Install the latest version of r4ss using devtools
+devtools::install_github("r4ss/r4ss")
 library(r4ss)
 
 # CHANGE values in this section ===============================================
@@ -39,7 +53,7 @@ library(r4ss)
 # Give the names of the data and control files, for each model
 # Used in the SS_files_linebreaks.R
 mod1_dat = 'china_WAonly_data.ss'
-# mod2_dat = 'china_central_control.ss'
+# mod2_dat = 'china_central_data.ss'
 # mod3_dat = 'china_south_data.ss'
 
 # Control file names 
@@ -253,7 +267,7 @@ legend('topright', legend=mod.names, col=mod.cols, lwd=3, bg='white', bty='n')
 dev.off()
 
 # =============================================================================
-# END SECTION 3================================================================
+# END SECTION 2================================================================
 # =============================================================================
 
 
@@ -264,10 +278,11 @@ dev.off()
 # writes the entire myreplist and mod structure to a file
 # useful if you need to find a particular variable r4ss creates
 # change model and directory
-sink("./r4ss/plots_mod1/list_of_dataframes.csv", type="output")
-invisible(lapply(mod1, function(x) dput(write.csv(x))))
-sink()
 
-sink("./r4ss/plots_mod1/mod_structure.csv", type="output")
-invisible(str(mod1,list.len = 9999))
-sink()
+#sink("./r4ss/plots_mod1/list_of_dataframes.csv", type="output")
+#invisible(lapply(mod1, function(x) dput(write.csv(x))))
+#sink()
+
+#sink("./r4ss/plots_mod1/mod_structure.csv", type="output")
+#invisible(str(mod1,list.len = 9999))
+#sink()
